@@ -1,1 +1,3 @@
-# tidy_tuesday
+# Michael Mullarkey's \#TidyTuesday Repository
+
+I'm [Michael Mullarkey](https://mcmullarkey.github.io/), a PhD clinical psychologist, data scientist, and software developer. This repo has all of my #TidyTuesday code since I started participating in August of 2021. You might know me from [SLICED](https://www.notion.so/Sliced-Show-c7bd26356e3a42279e2dfbafb0480073), my [Twitch Channel](https://www.twitch.tv/mcmullarkey) where I stream data science, or [Twitter](https://twitter.com/mcmullarkey).
