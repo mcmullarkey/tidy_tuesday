@@ -56,4 +56,12 @@ top_medals <- athletes %>%
   print()
 
 ```
+```{r}
+
+top_medals %>% 
+  separate(col = athlete, into = c("last_name", "first_name"), sep = " ") %>% 
+  mutate(last_name = tolower(last_name),
+         last_name = str_to_title(last_name))
+
+```
 
