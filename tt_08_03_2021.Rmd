@@ -56,12 +56,49 @@ top_medals <- athletes %>%
   print()
 
 ```
-```{r}
+```{r tidying athlete name and refactoring medal count}
 
-top_medals %>% 
+library(glue)
+
+tidy_medals <- top_medals %>% 
   separate(col = athlete, into = c("last_name", "first_name"), sep = " ") %>% 
   mutate(last_name = tolower(last_name),
-         last_name = str_to_title(last_name))
+         last_name = str_to_title(last_name),
+         full_name = glue("{first_name} {last_name}")) %>% 
+  group_by(last_name) %>% 
+  arrange(year) %>% 
+  mutate(medal_n = row_number()) %>% 
+  ungroup() %>% 
+  print()
 
 ```
+
+```{r}
+
+library(showtext)
+
+font_add_google(name = "Dancing Script",
+                family = "dancing")
+
+showtext::showtext_auto()
+
+tidy_medals %>% 
+  mutate(medal = as.factor(medal),
+         medal = fct_relevel(medal, "Gold", "Silver", "Bronze")) %>% 
+  ggplot(aes(full_name, fill = medal)) +
+  coord_flip() +
+  geom_bar(alpha = 0.6) +
+  scale_fill_manual(values = c("darkgoldenrod1", "darkgrey", "darkgoldenrod")) +
+  theme_dark() +
+  theme(plot.background = element_rect(fill = "grey75"),
+        legend.background = element_rect(fill = "grey75"),
+        text = element_text(family = "dancing"),
+        axis.text.y = element_text(family = "dancing", face = "bold"),
+        axis.text.x = element_text(family = "dancing", face = "bold")) +
+  labs(x = " ", y = "Total Number of Medals", fill = "Medal Type",
+       title = "The Top Paralympic Medal Winner of All-Time Has More Golds Than Anyone Else Has Medals",
+       subtitle = "All of These Folks Are Swimmers")
+
+```
+
 
