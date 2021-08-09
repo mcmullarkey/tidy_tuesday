@@ -110,8 +110,8 @@ p_medal_count <- tidy_medals %>%
         axis.text.x = element_text(family = "dancing", face = "bold"),
         plot.caption = element_text(hjust = 1.3)) +
   labs(x = " ", y = "Total Number of Medals", fill = "Medal Type",
-       title = "The Top Paralympic Medal Winner of All-Time Has More Golds Than Anyone Else Has Medals",
-       subtitle = "All of These Folks Are Swimmers", caption = "Plot by @mcmullarkey, twitter.com/mcmullarkey")
+       title = "Top All-Time Paralympic Medal Winner Has More Golds Than Anyone Else Has Medals",
+       subtitle = "All of These Folks Are Swimmers", caption = "Plot by @mcmullarkey, twitter.com/mcmullarkey\nCode: https://github.com/mcmullarkey/tidy_tuesday/")
 
 p_medal_count
 
