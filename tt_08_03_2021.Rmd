@@ -73,6 +73,19 @@ tidy_medals <- top_medals %>%
 
 ```
 
+```{r installing ggtrack if necessary}
+
+# Installation commented out here but you can uncomment if you need to install
+
+library(devtools)
+devtools::install_github("mrjoh3/ggtrack")
+
+library(ggtrack)
+
+
+```
+
+
 ```{r}
 
 library(showtext)
@@ -82,7 +95,7 @@ font_add_google(name = "Dancing Script",
 
 showtext::showtext_auto()
 
-tidy_medals %>% 
+p_medal_count <- tidy_medals %>% 
   mutate(medal = as.factor(medal),
          medal = fct_relevel(medal, "Gold", "Silver", "Bronze")) %>% 
   ggplot(aes(full_name, fill = medal)) +
@@ -99,6 +112,14 @@ tidy_medals %>%
        title = "The Top Paralympic Medal Winner of All-Time Has More Golds Than Anyone Else Has Medals",
        subtitle = "All of These Folks Are Swimmers")
 
+p_medal_count
+
 ```
 
+```{r adding ggtrack to plot}
+
+ggtrack(p_medal_count,
+        qr_content = "")
+
+```
 
