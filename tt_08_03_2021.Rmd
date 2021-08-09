@@ -1,0 +1,59 @@
+---
+title: "Untitled"
+author: "Michael Mullarkey"
+date: "8/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+require("knitr")
+## setting working directory
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, warning = FALSE, message = FALSE, include = FALSE)
+
+```
+
+```{r}
+
+library(tidytuesdayR)
+
+paralympics <- tidytuesdayR::tt_load("2021-08-03")
+
+athletes <- paralympics$athletes
+
+```
+
+```{r}
+
+library(tidyverse)
+library(skimr)
+
+skim(athletes)
+glimpse(athletes)
+
+```
+```{r identifying top medal getters in history}
+
+top_5_medal <- athletes %>% 
+  filter(!is.na(athlete)) %>% 
+  group_by(athlete) %>% 
+  summarise(n_medals = n()) %>% 
+  arrange(desc(n_medals)) %>% 
+  slice(1:5) %>% 
+  print()
+
+```
+
+
+```{r getting all data for top medal getters in history}
+
+top_medals <- athletes %>% 
+  filter(!is.na(athlete)) %>% 
+  group_by(athlete) %>% 
+  mutate(n_medals = n()) %>% 
+  ungroup() %>% 
+  arrange(desc(n_medals)) %>% 
+  filter(athlete %in% top_5_medal$athlete) %>% 
+  print()
+
+```
+
