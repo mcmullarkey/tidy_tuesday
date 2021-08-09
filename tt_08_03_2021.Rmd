@@ -119,7 +119,9 @@ p_medal_count
 ```{r adding ggtrack to plot}
 
 ggtrack(p_medal_count,
-        qr_content = "")
+        qr_content = "https://github.com/mcmullarkey/tidy_tuesday/blob/main/tt_08_03_2021.Rmd",
+        caption = glue("Data accessed from #TidyTuesday 08-03-2021
+                       Scan QR code for all cleaning/plotting code"))
 
 ```
 
