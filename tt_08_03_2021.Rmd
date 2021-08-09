@@ -114,14 +114,17 @@ p_medal_count <- tidy_medals %>%
 
 p_medal_count
 
+ggsave("stacked_bar_08_03_2021.jpg")
+
 ```
 
 ```{r adding ggtrack to plot}
 
-ggtrack(p_medal_count,
+p_track <- ggtrack(p_medal_count,
         qr_content = "https://github.com/mcmullarkey/tidy_tuesday/blob/main/tt_08_03_2021.Rmd",
-        caption = glue("Data accessed from #TidyTuesday 08-03-2021
-                       Scan QR code for all cleaning/plotting code"))
+        caption = paste0("Data accessed from #TidyTuesday 08-03-2021 <br> Scan QR code for all cleaning/plotting code <br> Plot by @mcmullarkey"),
+        logo = 'https://www.r-project.org/logo/Rlogo.png',
+        plot.background = element_rect(fill = "grey75", size = 0))
 
 ```
 
