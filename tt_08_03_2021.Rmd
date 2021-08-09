@@ -107,10 +107,11 @@ p_medal_count <- tidy_medals %>%
         legend.background = element_rect(fill = "grey75"),
         text = element_text(family = "dancing"),
         axis.text.y = element_text(family = "dancing", face = "bold"),
-        axis.text.x = element_text(family = "dancing", face = "bold")) +
+        axis.text.x = element_text(family = "dancing", face = "bold"),
+        plot.caption = element_text(hjust = 1.3)) +
   labs(x = " ", y = "Total Number of Medals", fill = "Medal Type",
        title = "The Top Paralympic Medal Winner of All-Time Has More Golds Than Anyone Else Has Medals",
-       subtitle = "All of These Folks Are Swimmers")
+       subtitle = "All of These Folks Are Swimmers", caption = "Plot by @mcmullarkey, twitter.com/mcmullarkey")
 
 p_medal_count
 
@@ -119,6 +120,8 @@ ggsave("stacked_bar_08_03_2021.jpg")
 ```
 
 ```{r adding ggtrack to plot}
+
+## Not making this public yet because I can't save the plot in a way I like. Right now for me ggsave only gets the bottom part of the plot with the QR code, not the actual plot I created
 
 p_track <- ggtrack(p_medal_count,
         qr_content = "https://github.com/mcmullarkey/tidy_tuesday/blob/main/tt_08_03_2021.Rmd",
