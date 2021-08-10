@@ -53,13 +53,12 @@ library(ggridges)
 library(ggthemes)
 
 chain_investment %>% 
-  mutate(gross_inv_chain = log(gross_inv_chain + 1)) %>% 
-  filter(str_detect(meta_cat, "Total infrastructure") == TRUE) %>% 
-  ggplot(aes(x = gross_inv_chain, y = meta_cat, color = year, fill = as.factor(year))) +
-  geom_density_ridges(jittered_points = TRUE, position = "raincloud", alpha = 0.4) +
-  scale_color_viridis_c(option = "mako") +
-  scale_fill_viridis_d(option = "mako") +
+  # mutate(gross_inv_chain = log(gross_inv_chain + 1)) %>% 
+  ggplot(aes(x =  year,y = gross_inv_chain, color = meta_cat)) +
+  geom_line(alpha = 0.4) +
+  scale_color_viridis_d(option = "mako") +
   theme_solarized() +
+  facet_wrap(~meta_cat) +
   theme(legend.position = "none")
   
 
