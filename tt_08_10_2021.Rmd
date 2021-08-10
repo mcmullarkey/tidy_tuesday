@@ -1,0 +1,67 @@
+---
+title: "Tidy Tuesday 08/03/2021"
+author: "Michael Mullarkey"
+date: "8/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+require("knitr")
+## setting working directory
+knitr::opts_chunk$set(echo = TRUE, tidy = TRUE, warning = FALSE, message = FALSE, include = FALSE)
+
+```
+
+```{r loading in data}
+
+library(tidytuesdayR)
+
+infrastructure <- tidytuesdayR::tt_load("2021-08-10")
+
+investment <- infrastructure$investment
+
+chain_investment <- infrastructure$chain_investment
+
+ipd <- infrastructure$ipd
+
+```
+
+```{r using a function to skim the different dataframes}
+
+library(tidyverse)
+library(skimr)
+
+df_names <- list(investment, chain_investment, ipd)
+
+map(df_names, ~skim(.x))
+
+```
+
+```{r glimpsing the dataframes}
+
+# Had this in a function originally but the output was too messy
+
+glimpse(investment)
+glimpse(chain_investment)
+glimpse(ipd)
+
+```
+
+```{r}
+
+library(ggridges)
+library(ggthemes)
+
+chain_investment %>% 
+  mutate(gross_inv_chain = log(gross_inv_chain + 1)) %>% 
+  filter(str_detect(meta_cat, "Total infrastructure") == TRUE) %>% 
+  ggplot(aes(x = gross_inv_chain, y = meta_cat, color = year, fill = as.factor(year))) +
+  geom_density_ridges(jittered_points = TRUE, position = "raincloud", alpha = 0.4) +
+  scale_color_viridis_c(option = "mako") +
+  scale_fill_viridis_d(option = "mako") +
+  theme_solarized() +
+  theme(legend.position = "none")
+  
+
+```
+
