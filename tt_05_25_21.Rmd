@@ -312,3 +312,20 @@ type_glm %>%
   select(-var_diag)
 
 ```
+
+# Example Plot for Plotting Many Models with broom and purrr
+
+```{r}
+
+records %>% 
+  filter(type == "Three Lap") %>% 
+  group_by(track) %>% 
+  summarize(t_test = list(t.test(time))) %>% 
+  mutate(tidied = map(t_test, tidy)) %>% 
+  unnest(tidied) %>% 
+  ggplot(aes(estimate, track)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  labs(y = "")
+
+```
