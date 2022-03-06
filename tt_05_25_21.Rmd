@@ -41,3 +41,39 @@ library(patchwork)
 tt_data <- tt_load("2021-05-25")
 
 ```
+
+# Light Data Cleaning
+
+```{r}
+
+records <- tt_data$records %>% 
+  mutate(
+    across(
+      where(is.character),
+      factor
+    )
+  ) %>% 
+  select(-time_period) %>% 
+  clean_names()
+
+```
+
+# Some Practice Data Summarizing and Wrangling
+
+```{r}
+
+# From this talk https://www.youtube.com/watch?v=NDHSBUN_rVU
+
+records %>% 
+  count(track, sort = TRUE, name = "records_set") %>% 
+  mutate(test = records_set %/% 10)
+
+records %>% 
+  add_count(track)
+
+records %>% 
+  filter(type == "Three Lap") %>% 
+  group_by(track) %>% 
+  summarize(avg_time = mean(time))
+
+```
