@@ -77,3 +77,115 @@ records %>%
   summarize(avg_time = mean(time))
 
 ```
+
+# First Plot for Patchwork: Number of Records Set Per Track
+
+```{r}
+
+font_add_google("Oswald", "oswald")
+
+showtext_auto()
+
+num_record_plot <- records %>% 
+  count(track, sort = TRUE) %>% 
+  mutate(track = fct_reorder(track, n)) %>% 
+  ggplot(aes(track, n, fill = n)) + 
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(option = "plasma") +
+  geom_text(aes(label = track), color = "black", family = "oswald", hjust = 1.05, size = 3) +
+  labs(y = "# of World Records Set Since 1997",
+       x = "",
+       title = "Lots of Records Set in Wario Stadium",
+       subtitle = "Far Fewer Records Set in Bowser Castle") +
+  theme_dark() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = "black"),
+        text = element_text(color = "white", family = "oswald"),
+        axis.text.x = element_text(color = "white", angle = 25),
+        plot.title.position =  "plot")
+
+num_record_plot
+
+```
+
+# Second Plot for Patchwork: Average Duration of Record Time by Track
+
+```{r}
+
+avg_record_plot <- records %>% 
+  group_by(track) %>% 
+  summarize(avg_duration = mean(record_duration)) %>% 
+  arrange(desc(avg_duration)) %>% 
+  mutate(track = fct_reorder(track, avg_duration)) %>% 
+  ggplot(aes(track, avg_duration, fill = avg_duration)) + 
+  geom_col() +
+  coord_flip() +
+  scale_y_reverse() +
+  scale_fill_viridis_c(option = "plasma") +
+  geom_text(aes(label = track), color = "black", family = "oswald", hjust = -.05, size = 3) +
+  labs(y = "Average # of Days World Records Are Held",
+       x = "",
+       title = "Records Set In Yoshi Valley are Held the Longest",
+       subtitle = "Don't Expect a Record in Wario Stadium to Last Long") +
+  theme_dark() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = "black"),
+        text = element_text(color = "white", family = "oswald"),
+        axis.text.x = element_text(color = "white", angle = 25),
+        plot.title.position =  "plot")
+
+avg_record_plot
+
+```
+
+# Third Plot for Patchwork: Raw Record Duration Data by Several Tracks
+
+```{r}
+
+## Using this dataset so I can use a glue string in the title of the plot rather than hard coding the number
+
+yv_perc <- records %>% 
+  filter(track == "Yoshi Valley") %>% 
+  count(record_duration <= 21) %>% 
+  mutate(percent = round((100*n/sum(n)),2))
+
+raw_record_plot <- records %>% 
+  filter(track == "Wario Stadium" | track == "Toad's Turnpike" | track == "Bowser's Castle" | track == "Yoshi Valley") %>% 
+  ggplot(aes(record_duration, color = track)) + 
+  geom_dots() +
+  scale_color_viridis_d(option = "plasma") +
+  labs(x = "# of Days World Records Are Held",
+       y = "",
+       title = glue("Records Set In Yoshi Valley are Still Broken in 3 Weeks or Less {yv_perc[2,3]}% of the Time"),
+       subtitle = "The High Average Record Duration is Driven by More Frequent Long-Term Record Holders Than Other Tracks",
+       color = "Track") +
+  theme_dark() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = "black"),
+        legend.background = element_rect(fill = "black"),
+        legend.position = "top",
+        text = element_text(color = "white", family = "oswald"),
+        axis.text.x = element_text(color = "white", angle = 25),
+        plot.title.position =  "plot")
+
+raw_record_plot
+
+```
+
+```{r}
+
+mk_64_patchwork <- (num_record_plot + avg_record_plot) / (raw_record_plot) +
+  plot_annotation(theme = theme(plot.background = element_rect(fill = "black"), panel.background = element_rect(fill = "black")))
+
+ggsave("mk_64_patchwork.jpg")
+
+```
