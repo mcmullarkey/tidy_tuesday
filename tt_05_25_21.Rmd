@@ -189,3 +189,65 @@ mk_64_patchwork <- (num_record_plot + avg_record_plot) / (raw_record_plot) +
 ggsave("mk_64_patchwork.jpg")
 
 ```
+
+# Looking At No Shortcut, 3 Lap World Records Over Time
+
+```{r}
+
+font_add_google(name = "Concert One",
+                family = "concert")
+
+showtext_auto()
+
+records %>% 
+  filter(shortcut == "No" & type == "Three Lap") %>% 
+  ggplot(aes(x = date, y = time, color = time)) +
+  geom_line() +
+  scale_color_viridis_c(option = "rocket") +
+  facet_wrap(~track, scales = "free") +
+  theme_dark() +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "grey75"),
+        axis.text.x = element_text(angle = 45, size = 6),
+        text = element_text(family = "concert"),
+        plot.title.position = "plot"
+        ) +
+  labs(x = "Year World Record Set",
+       y = "Time (sec)",
+       title = "World Records Drop Like a Stone for All Courses Over Time",
+       subtitle = "For No Shortcut/3 Lap World Records")
+  
+
+```
+
+# Less Than Ideal Ploar Plot Looking at Longest Record Held by Track
+
+```{r}
+
+records %>% 
+  group_by(track, type) %>% 
+  slice(which.max(record_duration)) %>% 
+  ungroup() %>% 
+  filter(type == "Three Lap" & shortcut == "No") %>% 
+  arrange(desc(record_duration)) %>% 
+  mutate(record_duration_factor = as.factor(record_duration),
+    record_duration_factor = fct_reorder(record_duration_factor, record_duration, .desc = TRUE)) %>% 
+  ggplot(aes(x = record_duration_factor)) +
+  geom_col(aes(y = track, fill = track)) +
+  scale_fill_viridis_d(option = "plasma") +
+  coord_polar() +
+  geom_text(aes(y = track, label = record_duration_factor), color = "white") +
+  theme_dark() +
+  theme(axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        plot.background = element_rect(fill = "black"),
+        panel.background = element_rect(fill = "black"),
+        legend.background = element_rect(fill = "black"),
+        text = element_text(color = "white")) +
+  labs(y = "",
+       x = "",
+       fill = "Mario Kart 64 Track",
+       title = "Toad's Turnpike's Record Holder Held On Longest",
+       subtitle = "For No Shortcut / 3 Lap Records")
+
+```
