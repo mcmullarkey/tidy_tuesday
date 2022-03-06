@@ -251,3 +251,64 @@ records %>%
        subtitle = "For No Shortcut / 3 Lap Records")
 
 ```
+
+# Several Other Practice Plots Where I Was Messing with ggplot2 Settings
+
+```{r}
+
+records %>% 
+  filter(track != "Rainbow Road") %>% 
+  mutate(track = fct_lump(track, 5),
+         track = fct_reorder(track, time)) %>% 
+  ggplot(aes(track, time, color = time)) + 
+  geom_dots() +
+  scale_y_log10() +
+  scale_color_viridis_c(option = "rocket") +
+  coord_flip() +
+  facet_wrap(~type) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(y = "Log of Record Time",
+       x = "")
+
+```
+
+```{r}
+
+ct_df <- records %>% 
+  summarize(mean_record = mean(time, na.rm = TRUE),
+            median_record = median(time, na.rm = TRUE))
+
+records %>% 
+  ggplot(aes(time, color = time, fill = time)) +
+  geom_dots() +
+  scale_x_log10() +
+  scale_color_viridis_c(option = "magma") +
+  scale_fill_viridis_c(option = "magma") +
+  labs(x = "Record Time",
+       y = "Density") +
+  geom_vline(xintercept = mean(records$time, na.rm = TRUE), color = "dodgerblue1") +
+  geom_vline(xintercept = median(records$time, na.rm = TRUE), color = "orange1") +
+  annotate(geom = "text", x = 115, y = 0.9, label = glue("Mean: {round(ct_df$mean_record, 2)}"), color = "dodgerblue1") +
+  annotate(geom = "text", x = 65, y = 0.9, label = glue("Median: {round(ct_df$median_record, 2)}"), color = "orange1") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+# Looking at Converting Log Odds to Odds Ratios in GLM Output Using Broom
+
+```{r}
+
+levels(records$type)
+
+type_glm <- glm(type ~ time, data = records, family = "binomial")
+
+type_glm %>% 
+  tidy() %>% 
+  mutate(odds_ratio = exp(estimate),
+         var_diag = diag(vcov(type_glm)),
+         or_se = sqrt(odds_ratio^2 * var_diag)) %>% 
+  select(-var_diag)
+
+```
