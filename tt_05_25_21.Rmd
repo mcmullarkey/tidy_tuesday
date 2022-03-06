@@ -1,0 +1,43 @@
+---
+title: "Tidy Tuesday 05/21/2021"
+author: "Michael Mullarkey"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+geometry: margin=0.50in
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+require("knitr")
+knitr::opts_chunk$set(echo = FALSE, tidy = TRUE, warning = FALSE, message = FALSE, include = FALSE)
+```
+
+# Loading Packages
+
+```{r packages, code_folding = FALSE}
+
+library(tidytuesdayR)
+library(tidyverse)
+library(janitor)
+library(broom)
+library(skimr)
+library(gt)
+library(showtext)
+library(ggdist)
+library(glue)
+library(patchwork)
+
+```
+
+# Reading in the Data
+
+```{r load in the data, code_folding = FALSE}
+
+tt_data <- tt_load("2021-05-25")
+
+```
