@@ -32,6 +32,7 @@ library(ggdist)
 library(glue)
 library(patchwork)
 library(scales)
+library(lubridate)
 
 ```
 
@@ -191,7 +192,58 @@ baby_names %>%
        subtitle = "As a Percentage of Total Names That Year")
 
 ```
+## Practice Between Third and Fourth Run
 
+```{r}
+
+year_labels <- baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  select(year) %>% 
+  filter(row_number() %% 10 == 1) %>% 
+  deframe()
+
+baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  ggplot(aes(year, prop, color = prop)) +
+  geom_line() +
+  scale_color_viridis_c(option = "mako") +
+  scale_y_continuous(labels = percent) +
+  scale_x_continuous(breaks= year_labels) +
+  theme_ggdist() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 23)) +
+  labs(x = "Year",
+       y = "% of Total Names",
+       title = "Michael Peaked in the Mid 1900s (Ouch)",
+       subtitle = "As a Percentage of Total Names That Year At Least")
+
+```
+
+# Fourth Run
+
+```{r}
+
+baby_names <- tt_data$babynames
+
+year_labs <- baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>%  
+  select(year) %>% 
+  filter(row_number() %% 10 == 1) %>% 
+  deframe()
+
+baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  ggplot(aes(x = year, y = prop, color = prop)) +
+  geom_line() +
+  scale_color_viridis_c(option = "mako") +
+  theme_ggdist() +
+  scale_x_continuous(breaks = year_labs) +
+  theme(legend.position = "none") +
+  labs(x = "Year",
+       y = "% of Total Names",
+       title = "Michael Peaked Mid 1900s (Ouch)")
+
+```
 
 
 
