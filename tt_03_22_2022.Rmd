@@ -31,6 +31,7 @@ library(showtext)
 library(ggdist)
 library(glue)
 library(patchwork)
+library(scales)
 
 ```
 
@@ -46,7 +47,7 @@ tt_data <- tt_load("2022-03-22")
 
 I'll give myself 5 minutes to make a visual, with up to 10 minutes between runs
 
-Each run I have to recreate the code with no copy-pasting or looking at previous code (once the run starts, can look at the code during the in between run times)
+Each run I have to clear the environment, recreate the code with no copy-pasting or looking at previous code (once the run starts, can look at the code during the in between run times), and without using outside references (again, can do that during the in between time but not during the run)
 
 ```{r}
 
@@ -77,4 +78,36 @@ baby_names %>%
        y = "Total Number of Names")
 
 ```
+## Thoughts Between First and Second Runs
+
+I can definitely iterate on this plot, and it could inform cooler plots later in the run
+
+## Practice Between First and Second Runs
+
+```{r}
+
+font_add_google(name = "Oswald",
+                family = "oswald")
+
+showtext_auto()
+
+baby_names %>% 
+  group_by(year) %>% 
+  summarise(sum_names = sum(n, na.rm = TRUE)) %>% 
+  ggplot(aes(x = year, y = sum_names, color = sum_names)) + 
+  geom_line() +
+  scale_color_viridis_c(option = "plasma") +
+  theme_dark() +
+  theme(panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = "black"),
+        legend.background = element_rect(fill = "black"),
+        text = element_text(color ="white", family = "oswald"),
+        axis.text = element_text(color = "white"),
+        legend.position = "none") +
+  labs(x = "Year",
+       y = "Total Number of Names",
+       title = "The Total Number of Babies Per Year Has Increased in This Data Over Time") +
+  scale_y_continuous(labels = comma)
+```
+
 
