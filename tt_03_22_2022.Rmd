@@ -140,9 +140,57 @@ baby_names %>%
 
 ```
 
+## Practice/Scouting Between Second and Third Run
 
+```{r}
 
+life <- tt_data$lifetables
 
+skim(life)
+
+```
+
+```{r}
+
+birth <- tt_data$births
+
+skim(birth)
+
+```
+
+```{r}
+
+baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  # mutate(percent = prop * 100) %>% 
+  ggplot(aes(x = year, y = prop, color = prop)) +
+  geom_line() +
+  scale_color_viridis_c(option = "rocket") +
+  theme_minimal() +
+  scale_y_continuous(labels = percent)
+
+```
+
+# Third Run
+
+```{r}
+
+baby_names <- tt_data$babynames
+
+baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  ggplot(aes(year, prop, color = prop)) +
+  geom_line() +
+  scale_color_viridis_c(option = "mako") +
+  scale_y_continuous(labels = percent) +
+  theme_ggdist() +
+  theme(legend.position = "none") +
+  labs(x = "Year",
+       y = "% of Total Names",
+       title = "Michael Peaked in the Mid 1900s (Ouch)",
+       subtitle = "As a Percentage of Total Names That Year")
+
+```
 
 
 
