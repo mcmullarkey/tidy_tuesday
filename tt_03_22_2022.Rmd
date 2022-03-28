@@ -57,7 +57,7 @@ skim(baby_names)
 
 ```
 
-## First Run
+# First Run
 
 ```{r}
 
@@ -109,5 +109,115 @@ baby_names %>%
        title = "The Total Number of Babies Per Year Has Increased in This Data Over Time") +
   scale_y_continuous(labels = comma)
 ```
+
+# Second Run
+
+```{r}
+
+baby_names <- tt_data$babynames
+
+font_add_google(name = "Oswald",
+                family = "oswald")
+
+showtext.auto()
+
+baby_names %>% 
+  group_by(year) %>% 
+  summarise(babies_year = sum(n, na.rm = TRUE)) %>% 
+  ggplot(aes(x = year, y = babies_year, color = babies_year)) +
+  geom_line() +
+  scale_color_viridis_c(option = "plasma") +
+  theme_dark() +
+  theme(legend.position = "none",
+        panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = "black"),
+        text = element_text(color = "white", family = "oswald"),
+        axis.text = element_text(color = "white", family = "oswald")) +
+  scale_y_continuous(labels = comma) +
+  labs(x = "Year",
+       y = "# of Babies",
+       title = "The Number of Babies Per Year Has Increased in This Data Over Time")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
