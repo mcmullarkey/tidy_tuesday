@@ -1,0 +1,80 @@
+---
+title: "Tidy Tuesday 05/21/2021"
+author: "Michael Mullarkey"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 5
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+geometry: margin=0.50in
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+require("knitr")
+knitr::opts_chunk$set(echo = FALSE, tidy = TRUE, warning = FALSE, message = FALSE, include = FALSE)
+```
+
+# Loading Packages
+
+```{r packages, code_folding = FALSE}
+
+library(tidytuesdayR)
+library(tidyverse)
+library(janitor)
+library(broom)
+library(skimr)
+library(gt)
+library(showtext)
+library(ggdist)
+library(glue)
+library(patchwork)
+
+```
+
+# Reading in the Data
+
+```{r load in the data, code_folding = FALSE}
+
+tt_data <- tt_load("2022-03-22")
+
+```
+
+# Viz% Runs
+
+I'll give myself 5 minutes to make a visual, with up to 10 minutes between runs
+
+Each run I have to recreate the code with no copy-pasting or looking at previous code (once the run starts, can look at the code during the in between run times)
+
+```{r}
+
+baby_names <- tt_data$babynames
+
+skim(baby_names)
+
+```
+
+## First Run
+
+```{r}
+
+baby_names %>% 
+  group_by(year) %>% 
+  summarise(sum_names = sum(n, na.rm = TRUE)) %>% 
+  ggplot(aes(x = year, y = sum_names, color = sum_names)) + 
+  geom_line() +
+  scale_color_viridis_c(option = "plasma") +
+  theme_dark() +
+  theme(panel.background = element_rect(fill = "black"),
+        plot.background = element_rect(fill = "black"),
+        legend.background = element_rect(fill = "black"),
+        text = element_text(color ="white"),
+        axis.text = element_text(color = "white"),
+        legend.position = "none") +
+  labs(x = "Year",
+       y = "Total Number of Names")
+
+```
+
