@@ -244,7 +244,67 @@ baby_names %>%
        title = "Michael Peaked Mid 1900s (Ouch)")
 
 ```
+```{r}
 
+font_add_google(name = "Orbitron",
+                family = "orbitron")
+
+year_labs <- baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>%  
+  select(year) %>% 
+  filter(row_number() %% 10 == 1) %>% 
+  deframe()
+
+baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  ggplot(aes(x = year, y = prop, color = prop)) +
+  geom_line() +
+  geom_point() +
+  scale_color_viridis_c(option = "inferno") +
+  theme_ggdist() +
+  scale_x_continuous(breaks = year_labs) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 23),
+        text = element_text(family = "orbitron")) +
+  expand_limits(y = c(0,.05)) +
+  labs(x = "Year",
+       y = "% of Total Names",
+       title = "Michael Peaked Mid 1900s (Ouch)")
+
+```
+
+```{r}
+
+baby_names <- tt_data$babynames
+
+year_labs <- baby_names %>% 
+  distinct(year) %>% 
+  filter(row_number() %% 10 == 1) %>% 
+  deframe()
+
+font_add_google(name = "Orbitron",
+                family = "orbitron")
+
+showtext_auto()
+
+baby_names %>% 
+  filter(name == "Michael" & sex == "M") %>% 
+  ggplot(aes(x = year, y = prop, color = prop)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = year_labs) +
+  scale_y_continuous(labels = percent) +
+  theme_ggdist() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 23),
+        text = element_text(family = "orbitron")) +
+  labs(x = "Year",
+       y = "% of Total Names",
+       title = "Michael Peaked Mid 1900s (Ouch)",
+       subtitle = "As the % of Total Names")
+
+```
 
 
 
